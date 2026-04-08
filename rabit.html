@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Rabitat | Bestsellers Collection</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f3d0d0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1a1e2b;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            /* padding: 48px 0; */
+        }
+
+        /* ---------- TABS NAVIGATION ---------- */
+        .tabs-nav {
+            margin-bottom: 32px;
+        }
+
+        .tabs-nav__scroller {
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .tabs-nav__scroller-inner {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tabs-nav__item-list {
+            display: flex;
+            gap: 12px;
+            background: #f0ede8;
+            padding: 6px;
+            border-radius: 60px;
+        }
+
+        .tabs-nav__item {
+            background: transparent;
+            border: none;
+            padding: 10px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            color: #2c2e3a;
+        }
+
+        .tabs-nav__item[aria-expanded="true"] {
+            background: #7098ee;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* ---------- PRODUCT GRID (FIX) ---------- */
+        .product-list__inner {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px 20px;
+            margin-top: 24px;
+        }
+
+        /* ---------- PRODUCT CARD (MODERN FIX) ---------- */
+        .xmas-card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .xmas-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
+        }
+
+        .xmas-card-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* image container */
+        .xmas-image-container {
+            position: relative;
+            background: #f9f7f4;
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .xmas-image-link {
+            display: block;
+            text-decoration: none;
+        }
+
+        .xmas-product-img {
+            width: 100%;
+            /* max-width: 240px; */
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .xmas-card:hover .xmas-product-img {
+            transform: scale(1.02);
+        }
+
+        /* rating badge */
+        .xmas-rating-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
+            padding: 5px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            color: #1e2a3a;
+        }
+
+        .xmas-star {
+            color: #f5b342;
+            font-size: 14px;
+        }
+
+        /* product info */
+        .xmas-info {
+            padding: 18px 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .xmas-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .xmas-title a {
+            text-decoration: none;
+            color: #1a1e2b;
+            transition: color 0.2s;
+        }
+
+        .xmas-title a:hover {
+            color: #e10600;
+        }
+
+        .xmas-subheading {
+            font-size: 13px;
+            color: #5f6c7a;
+            letter-spacing: 0.3px;
+            margin-top: -4px;
+        }
+
+        /* price section */
+        .xmas-price-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 8px;
+            margin: 6px 0 4px;
+        }
+
+        .xmas-sale-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: #e10600;
+            letter-spacing: -0.3px;
+        }
+
+        .xmas-original-price {
+            font-size: 14px;
+            color: #8c919b;
+            text-decoration: line-through;
+        }
+
+        .xmas-save-badge {
+            background: #f31b1b;
+            color: #fcfcfc;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* variant name */
+        .xmas-variant-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #3a4455;
+            background: #f4f2ef;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            width: fit-content;
+        }
+
+        /* variant swatches */
+        .xmas-variant-section {
+            margin: 6px 0 4px;
+        }
+
+        .xmas-variants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .xmas-variant-item {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .xmas-variant-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .xmas-variant-item.xmas-active {
+            border-color: #e10600;
+            box-shadow: 0 0 0 2px rgba(225, 6, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* button */
+        .xmas-button-wrapper {
+            margin-top: 12px;
+        }
+
+        .xmas-add-to-cart {
+            width: 100%;
+            background: #e61616;
+            color: white;
+            border: none;
+            padding: 14px 12px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .xmas-add-to-cart:hover {
+            background: #ad1d18;
+            transform: scale(0.98);
+        }
+
+        .xmas-sold-out {
+            background: #b0b3bc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .xmas-sold-out:hover {
+            background: #b0b3bc;
+            transform: none;
+        }
+
+        /* badge positioning fix */
+        .xmas-pdp-badge-wrap {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .xmas-pdp-badge {
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 40px;
+            line-height: 1.2;
+            white-space: nowrap;
+            color: #fff;
+            letter-spacing: 0.3px;
+        }
+
+        .xmas-pdp-badge--first {
+            background: #e10600;
+        }
+
+        .xmas-pdp-badge--second {
+            background: #2084db;
+        }
+
+        /* hide elements for drawer/popover (quick-buy placeholders) */
+        quick-buy-drawer, quick-buy-popover {
+            display: none;
+        }
+
+        /* hidden products (if any) */
+        .hidden-product {
+            display: none;
+        }
+
+        /* responsive */
+        @media (max-width: 740px) {
+            .product-list__inner {
+                gap: 18px;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+            .xmas-info {
+                padding: 14px;
+            }
+            .xmas-sale-price {
+                font-size: 20px;
+            }
+            .xmas-pdp-badge-wrap {
+                top: 8px;
+                left: 8px;
+                gap: 4px;
+            }
+            .xmas-pdp-badge {
+                padding: 4px 8px;
+                font-size: 9px;
+            }
+            .xmas-variant-item {
+                width: 44px;
+                height: 44px;
+            }
+            .tabs-nav__item {
+                padding: 8px 18px;
+                font-size: 13px;
+            }
+        }
+
+        /* loader spinner (preserve from original) */
+        .loader-button__loader .spinner svg {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        .icon--spinner circle {
+            stroke: currentColor;
+        }
+
+        /* additional small tweaks */
+        .xmas-card [hidden] {
+            display: none;
+        }
+    </style>
+</head>
+<body >
+   <div class="top-bar">
+      BACK TO SCHOOL CLEARANCE SALE ENDS IN:
+      <span>00 Days : 10 Hrs : 58 Mins : 03 Secs</span>
+   </div>
+
+   <header class="header">
+      <div class="lefts">
+         <i class="fa-solid fa-bars"></i>
+         <span>SHOP</span>
+      </div>
+
+      <div class="logo">
+         rabitat
+      </div>
+
+      <div class="rights">
+         <i class="fa-solid fa-magnifying-glass"></i>
+         <i class="fa-regular fa-user"></i>
+         <div class="cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="count">0</span>
+         </div>
+      </div>
+   </header>
+
+   <section class="latest-collection section">
+      <div>
+         <img src="https://www.rabitat.com/cdn/shop/files/3rd--H-Banner.jpg?format=webp&v=1773148937&width=2160" alt="">
+      </div>
+      <div class="section__color-wrapper">
+         <div class="container">
+            <header class="">
+               <tabs-nav class="tabs-nav tabs-nav--center tabs-nav--edge2edge">
+                  <scrollable-content class="tabs-nav__scroller hide-scrollbar">
+                     <div class="tabs-nav__scroller-inner">
+                        <div class="tabs-nav__item-list">
+                           <button type="button" id="bts-@999" class="tabs-nav__item heading heading--small" aria-expanded="true" aria-controls="block-collection-4HcpeD">BESTSELLERS UNDER ₹999</button>
+                           <button type="button" id="bts-@1099" class="tabs-nav__item heading heading--small" aria-expanded="false" aria-controls="block-collection-PFrgwy">BESTSELLERS @ ₹1099</button>
+                        
+                        <span class="tabs-nav__position"></span>
+                     </div>
+                  </scrollable-content>
+               </tabs-nav>
+            </header>
+            <div class="featured-collections">
+               <!-- TAB 1: UNDER ₹999 -->
+               <product-list id="block-collection-4HcpeD" class="product-list became-visible" style="opacity: 1;">
+                  <div class="product-list__inner">
+                     <!-- Clean Lock 2.0 -->
+                     <div class="xmas-card" data-product-id="8843207639263">
+                        <div class="xmas-card-inner">
+                           <div class="xmas-image-container">
+                              <a href="/products/clean-lock-2-0" class="xmas-image-link"> 
+                                 <img src="https://www.rabitat.com/cdn/shop/files/Artboard_1_d1c4e5cb-1280-43d1-8f14-9d734f5a1a0e_326x326.jpg?v=1772019457" alt="Clean Lock 2.0" class="xmas-product-img" loading="lazy">
+                                 <div class="xmas-pdp-badge-wrap">
+                                    <div class="xmas-pdp-badge xmas-pdp-badge--second xmas-pdp-badge--first"> BESTSELLER</div>
+                                 </div>
+                                 <div class="xmas-rating-badge"><span class="xmas-star">★</span><span class="xmas-rating-number">4.91</span></div>
+                              </a>
+                           </div>
+                           <div class="xmas-info">
+                              <h3 class="xmas-title"><a href="/products/clean-lock-2-0">Clean Lock 2.0</a></h3>
+                              <p class="xmas-subheading">Food-Safe Insulated Bottle | 3+ Years | 410ml</p>
+                              <div class="xmas-price-section">
+                                 <span class="xmas-sale-price" data-price="">₹999</span>
+                                 <span class="xmas-original-price" data-compare="">₹2,199</span>
+                                 <span class="xmas-save-badge" data-discount="">54% OFF</span>
+                              </div>
+                              <p class="xmas-variant-name">Spunky</p>
+                              <!-- <div class="xmas-variant-section">
+                                 <div class="xmas-variants">
+                                    <div class="xmas-variant-item xmas-active" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_d1c4e5cb-1280-43d1-8f14-9d734f5a1a0e_100x100.jpg?v=1772019457" alt="Spunky"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_60f93103-f2c0-4e39-a8d5-218eddac14fd_100x100.jpg?v=1772019522" alt="Sizzle"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_ae6904fe-c67f-4ea4-83c1-0b06b302d674_100x100.jpg?v=1772019575" alt="Mad Eye"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_8338d5bb-d368-42c2-bf5e-18fa4bd87ba9_100x100.jpg?v=1772019649" alt="Shyguy"></div>
+                                    <div class="xmas-variant-item"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_b3373db4-62a6-4fbd-ae38-249fcd50ac86_100x100.jpg?v=1772019704" alt="Chatter Box"></div>
+                                 </div>
+                              </div> -->
+                              <div class="xmas-button-wrapper">
+                                 <button is="toggle-button" loader="" aria-controls="drawer-8843207639263" aria-expanded="false" class="xmas-add-to-cart"><span class="loader-button__text">ADD TO CART</span><span class="loader-button__loader" hidden><div class="spinner"><svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle></svg></div></span></button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                       <div class="xmas-card" data-product-id="8843207639263">
+                        <div class="xmas-card-inner">
+                           <div class="xmas-image-container">
+                              <a href="/products/clean-lock-2-0" class="xmas-image-link"> 
+                                 <img src="https://www.rabitat.com/cdn/shop/files/MF-RB-05237_1_326x326.jpg?v=1770630497" alt="Clean Lock 2.0" class="xmas-product-img" loading="lazy">
+                                 <div class="xmas-pdp-badge-wrap">
+                                    <div class="xmas-pdp-badge xmas-pdp-badge--second xmas-pdp-badge--first"> BESTSELLER</div>
+                                 </div>
+                                 <div class="xmas-rating-badge"><span class="xmas-star">★</span><span class="xmas-rating-number">4.91</span></div>
+                              </a>
+                           </div>
+                           <div class="xmas-info">
+                              <h3 class="xmas-title"><a href="/products/clean-lock-2-0">Clean Lock 2.0</a></h3>
+                              <p class="xmas-subheading">Food-Safe Insulated Bottle | 3+ Years | 410ml</p>
+                              <div class="xmas-price-section">
+                                 <span class="xmas-sale-price" data-price="">₹999</span>
+                                 <span class="xmas-original-price" data-compare="">₹2,199</span>
+                                 <span class="xmas-save-badge" data-discount="">54% OFF</span>
+                              </div>
+                              <p class="xmas-variant-name">Spunky</p>
+                              <!-- <div class="xmas-variant-section">
+                                 <div class="xmas-variants">
+                                    <div class="xmas-variant-item xmas-active" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_d1c4e5cb-1280-43d1-8f14-9d734f5a1a0e_100x100.jpg?v=1772019457" alt="Spunky"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_60f93103-f2c0-4e39-a8d5-218eddac14fd_100x100.jpg?v=1772019522" alt="Sizzle"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_ae6904fe-c67f-4ea4-83c1-0b06b302d674_100x100.jpg?v=1772019575" alt="Mad Eye"></div>
+                                    <div class="xmas-variant-item" ><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_8338d5bb-d368-42c2-bf5e-18fa4bd87ba9_100x100.jpg?v=1772019649" alt="Shyguy"></div>
+                                    <div class="xmas-variant-item"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_b3373db4-62a6-4fbd-ae38-249fcd50ac86_100x100.jpg?v=1772019704" alt="Chatter Box"></div>
+                                 </div>
+                              </div> -->
+                              <div class="xmas-button-wrapper">
+                                 <button is="toggle-button" loader="" aria-controls="drawer-8843207639263" aria-expanded="false" class="xmas-add-to-cart"><span class="loader-button__text">ADD TO CART</span><span class="loader-button__loader" hidden><div class="spinner"><svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle></svg></div></span></button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Zylo Special Edition -->
+                     <div class="xmas-card" data-product-id="9040495411423">
+                        <div class="xmas-card-inner">
+                           <div class="xmas-image-container">
+                              <a href="/products/zylo-special-edition" class="xmas-image-link"> 
+                                 <img src="https://www.rabitat.com/cdn/shop/files/Artboard_4_ffc4fb31-3334-4cd5-ab9b-9fc8e16c090c_326x326.jpg?v=1774337726" alt="Zylo Special Edition" class="xmas-product-img" loading="lazy">
+                                 <div class="xmas-pdp-badge-wrap">
+                                    <div class="xmas-pdp-badge xmas-pdp-badge--first">LIMITED STOCK</div>
+                                    <div class="xmas-pdp-badge xmas-pdp-badge--second">New Launch</div>
+                                 </div>
+                                 <div class="xmas-rating-badge"><span class="xmas-star">★</span><span class="xmas-rating-number">4.36</span></div>
+                              </a>
+                           </div>
+                           <div class="xmas-info">
+                              <h3 class="xmas-title"><a href="/products/zylo-special-edition">Zylo Special Edition</a></h3>
+                              <p class="xmas-subheading">4-8 Years | 550 ml</p>
+                              <div class="xmas-price-section"><span class="xmas-sale-price" data-price="">₹999</span><span class="xmas-original-price" data-compare="">₹1,999</span><span class="xmas-save-badge" data-discount="">50% OFF</span></div>
+                              <p class="xmas-variant-name">Little Sailor</p>
+                              <!-- <div class="xmas-variant-section"><div class="xmas-variants"><div class="xmas-variant-item xmas-active" data-variant-title="Little Sailor" data-variant-id="48586590159071" data-variant-available="true" data-variant-price="99900" data-variant-compare="199900"><img src="//www.rabitat.com/cdn/shop/files/Artboard_4_ffc4fb31-3334-4cd5-ab9b-9fc8e16c090c_100x100.jpg?v=1774337726" alt="Little Sailor"></div><div class="xmas-variant-item" data-variant-title="Dino Buddy" data-variant-id="48586590060767" data-variant-available="true" data-variant-price="99900" data-variant-compare="199900"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_bd81e7ae-78a3-4d81-a733-13411feea950_100x100.jpg?v=1774337726" alt="Dino Buddy"></div><div class="xmas-variant-item" data-variant-title="Twinkle Stars" data-variant-id="48586590093535" data-variant-available="true" data-variant-price="99900" data-variant-compare="199900">
+                                <img src="//www.rabitat.com/cdn/shop/files/Artboard_2_22237160-0285-4e11-a335-35f3a2913131_100x100.jpg?v=1774337726" alt="Twinkle Stars"></div><div class="xmas-variant-item" data-variant-title="Balloon Adventure" data-variant-id="48586590126303" data-variant-available="true" data-variant-price="99900" data-variant-compare="199900">
+                                    <img src="//www.rabitat.com/cdn/shop/files/Artboard_3_6baa4b58-b273-4450-83fc-8af9a1c40a3c_100x100.jpg?v=1774337726" alt="Balloon Adventure"></div><div class="xmas-variant-item" data-variant-title="Zylo Safari" data-variant-id="47165118480607" data-variant-available="true" data-variant-price="99900" data-variant-compare="199900">
+                                        <img src="//www.rabitat.com/cdn/shop/files/Artboard_1_copy_4_10_e8e7f2f2-2cc9-4923-8206-69bac0ac5f5c_100x100.jpg?v=1773470996" alt="Zylo Safari"></div></div>-->
+                                    
+                              <div class="xmas-button-wrapper"><button is="toggle-button" loader="" aria-controls="drawer-9040495411423" class="xmas-add-to-cart"><span class="loader-button__text">ADD TO CART</span></button></div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Zappy -->
+                     <div class="xmas-card" data-product-id="8572737487071">
+                        <div class="xmas-card-inner">
+                           <div class="xmas-image-container"><a href="https://www.rabitat.com/cdn/shop/files/MF-RB-05237_1_326x326.jpg?v=1770630497" class="xmas-product-img" loading="lazy"><div class="xmas-pdp-badge-wrap">
+                            <div class="xmas-pdp-badge xmas-pdp-badge--first">12 INCH</div>
+                            <div class="xmas-pdp-badge xmas-pdp-badge--second xmas-pdp-badge--first">⭐️ BESTSELLER</div></div><div class="xmas-rating-badge"><span class="xmas-star">★</span>4.89</div></a></div>
+                           <div class="xmas-info"><h3 class="xmas-title"><a href="/products/zappy-insulated-bottle">Zappy</a></h3><p class="xmas-subheading">Insulated Bottle 700ml</p><div class="xmas-price-section"><span class="xmas-sale-price" data-price="">₹999</span><span class="xmas-original-price" data-compare="">₹1,499</span><span class="xmas-save-badge" data-discount="">33% OFF</span></div><p class="xmas-variant-name">Red Martian</p><div class="xmas-button-wrapper"><button class="xmas-add-to-cart">ADD TO CART</button></div></div>
+                        </div>
+                     </div>
+                     <!-- Munchbee Pro -->
+                     <div class="xmas-card" data-product-id="9092536565983">
+                        <div class="xmas-card-inner">
+                           <div class="xmas-image-container"><a href="https://www.rabitat.com/cdn/shop/files/Artboard_1_b5d9d0a4-be59-4aad-97f8-790a446a103f_326x326.jpg?v=1774347276" class="xmas-product-img"><div class="xmas-pdp-badge-wrap"><div class="xmas-pdp-badge xmas-pdp-badge--second xmas-pdp-badge--first">⭐️ BESTSELLER</div></div><div class="xmas-rating-badge"><span class="xmas-star">★</span>4.86</div></a></div>
+                           <div class="xmas-info"><h3 class="xmas-title"><a href="/products/munchbee-pro">Munchbee Pro</a></h3><p class="xmas-subheading">Food-Safe Lunch Box | 850ml</p><div class="xmas-price-section"><span class="xmas-sale-price">₹999</span><span class="xmas-original-price">₹1,850</span><span class="xmas-save-badge">46% OFF</span></div><p class="xmas-variant-name">Shyguy</p>
+
+                           <!-- </p><div class="xmas-variant-section"><div class="xmas-variants"><div class="xmas-variant-item xmas-active" data-variant-title="Shyguy" data-variant-id="47147458887903" data-variant-price="99900" data-variant-compare="185000"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_b5d9d0a4-be59-4aad-97f8-790a446a103f_100x100.jpg"></div><div class="xmas-variant-item" data-variant-title="Chatterbox" data-variant-id="47147458822367" data-variant-price="99900" data-variant-compare="185000"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_bc0060be-9060-4caa-bb75-f3ce134b006e_100x100.jpg"></div><div class="xmas-variant-item" data-variant-title="Mad Eye" data-variant-id="47147458756831" data-variant-price="99900" data-variant-compare="185000"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_3d40421a-5d08-4a53-a245-67dc66858e9b_100x100.jpg"></div></div></div><div class="xmas-button-wrapper"> -->
+                            <button class="xmas-add-to-cart">ADD TO CART</button></div></div>
+                        </div>
+                     </div>
+                  </div>
+               </product-list>
+               <!-- TAB 2: @1099 (simplified but functional) -->
+               <product-list id="block-collection-PFrgwy" class="product-list" hidden>
+                  <div class="product-list__inner">
+                     <div class="xmas-card" data-product-id="7712387596511">
+                        <div class="xmas-card-inner"><div class="xmas-image-container"><a href="/products/hyde"><img src="//www.rabitat.com/cdn/shop/files/Gemini_Generated_Image_jv9e83jv9e83jv9e_326x326.png?v=1774506489" class="xmas-product-img"><div class="xmas-pdp-badge-wrap"><div class="xmas-pdp-badge xmas-pdp-badge--first">New Launch</div></div><div class="xmas-rating-badge"><span class="xmas-star">★</span>4.67</div></a></div><div class="xmas-info"><h3 class="xmas-title"><a href="/products/hyde">Hyde</a></h3><p class="xmas-subheading">1-litre Stainless Steel</p><div class="xmas-price-section"><span class="xmas-sale-price">₹1,199</span><span class="xmas-original-price">₹2,499</span><span class="xmas-save-badge">52% OFF</span></div><p class="xmas-variant-name">Happy Trails</p><div class="xmas-button-wrapper"><button class="xmas-add-to-cart">ADD TO CART</button></div></div></div>
+                     </div>
+                     <div class="xmas-card" data-product-id="9294027129055">
+                        <div class="xmas-card-inner"><div class="xmas-image-container"><a href="/products/zylo-max"><img src="//www.rabitat.com/cdn/shop/files/Artboard_1_64be27d1-f48f-4dc6-89ea-361e2addffcc_326x326.jpg?v=1773728628" class="xmas-product-img"><div class="xmas-pdp-badge-wrap"><div class="xmas-pdp-badge xmas-pdp-badge--first">New Launch</div></div><div class="xmas-rating-badge"><span class="xmas-star">★</span>4.72</div></a></div><div class="xmas-info"><h3 class="xmas-title"><a href="/products/zylo-max">Zylo Max</a></h3><p class="xmas-subheading">750ml | 7+ Years</p><div class="xmas-price-section"><span class="xmas-sale-price">₹1,099</span><span class="xmas-original-price">₹1,999</span><span class="xmas-save-badge">45% OFF</span></div><p class="xmas-variant-name">Pastle Splash</p><div class="xmas-button-wrapper"><button class="xmas-add-to-cart">ADD TO CART</button></div></div></div>
+                     </div>
+                  </div>
+               </product-list>
+            </div>
+         </div>
+      </div>
+   </section>
+   <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">Return & Exchange</a>
+          <a href="#">Payment Method</a>
+          <a href="#">Refund & Cancellation</a>
+          <a href="#">Shipping & Warranty</a>
+          <a href="#">Warranty Registration</a>
+          <a href="#">Return & Exchange Policy</a>
+          <a href="#">Track Your Order</a>
+          <a href="#">Store Locator</a>
+          <a href="#">Corporate Sales</a>
+          <a href="#">Grievance Officer</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+   
+        <div class="footer-col">
+          <h4>Product Categories</h4>
+          <a href="#">Bestsellers</a>
+          <a href="#">Drinkware</a>
+          <a href="#">Foodware</a>
+          <a href="#">Back to School</a>
+          <a href="#">Combos</a>
+          <a href="#">Rabitat Birthday</a>
+        </div>
+   
+        <div class="footer-col">
+          <h4>Parenting Blogs</h4>
+          <a href="#">All Posts</a>
+          <a href="#">Mom</a>
+          <a href="#">Newborn</a>
+          <a href="#">Toddler</a>
+          <a href="#">Pregnancy</a>
+          <a href="#">Parenting</a>
+        </div>
+   
+        <div class="footer-col">
+          <h4>About Rabitat</h4>
+          <a href="#">Who We Are</a>
+          <a href="#">Careers @ Rabitat</a>
+          <a href="#">Product Philosophy</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Login / Create Account</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Rabitat.com - All rights reserved.</div>
+    </footer>
+
+   <script>
+      (function() {
+         // Variant logic + price update + image + active class
+         document.querySelectorAll('.xmas-card').forEach(card => {
+            const variantItems = card.querySelectorAll('.xmas-variant-item');
+            const mainImage = card.querySelector('.xmas-product-img');
+            const variantNameEl = card.querySelector('.xmas-variant-name');
+            const priceEl = card.querySelector('[data-price]');
+            const compareEl = card.querySelector('[data-compare]');
+            const discountEl = card.querySelector('[data-discount]');
+            let currentVariantId = variantItems.length ? variantItems[0].getAttribute('data-variant-id') : null;
+
+            function updateVariantUI(selectedItem) {
+               variantItems.forEach(v => v.classList.remove('xmas-active'));
+               selectedItem.classList.add('xmas-active');
+               const imgSrc = selectedItem.querySelector('img')?.src.replace('_100x100', '_400x400');
+               if (mainImage && imgSrc) mainImage.src = imgSrc;
+               const title = selectedItem.getAttribute('data-variant-title');
+               if (variantNameEl && title) variantNameEl.textContent = title;
+               const priceRaw = parseInt(selectedItem.getAttribute('data-variant-price'));
+               const compareRaw = parseInt(selectedItem.getAttribute('data-variant-compare'));
+               if (priceEl && !isNaN(priceRaw)) priceEl.textContent = "₹" + (priceRaw/100);
+               if (compareEl && !isNaN(compareRaw)) {
+                  if (compareRaw > priceRaw) {
+                     compareEl.textContent = "₹" + (compareRaw/100);
+                     compareEl.style.display = "inline";
+                  } else compareEl.style.display = "none";
+               }
+               if (discountEl && !isNaN(compareRaw) && compareRaw > priceRaw) {
+                  const disc = Math.round(((compareRaw - priceRaw) * 100) / compareRaw);
+                  discountEl.textContent = disc + "% OFF";
+                  discountEl.style.display = "inline-flex";
+               } else if (discountEl) discountEl.style.display = "none";
+               currentVariantId = selectedItem.getAttribute('data-variant-id');
+               const atcBtn = card.querySelector('.xmas-add-to-cart');
+               if (atcBtn && currentVariantId) {
+                  const drawerId = atcBtn.getAttribute('aria-controls');
+                  if (drawerId) {
+                     const drawer = document.getElementById(drawerId);
+                     if (drawer && drawer.getAttribute('href')) {
+                        let url = new URL(drawer.getAttribute('href'), window.location.origin);
+                        url.searchParams.set('variant', currentVariantId);
+                        drawer.setAttribute('href', url.pathname + url.search);
+                     }
+                  }
+               }
+            }
+            variantItems.forEach(item => {
+               item.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  updateVariantUI(item);
+               });
+            });
+            // initial price sync for first active
+            const activeDefault = card.querySelector('.xmas-variant-item.xmas-active');
+            if (activeDefault) updateVariantUI(activeDefault);
+            else if (variantItems[0]) updateVariantUI(variantItems[0]);
+         });
+         // TABS SWITCHING
+         const tabBtns = document.querySelectorAll('.tabs-nav__item');
+         const tabPanels = {
+            'bts-@999': document.getElementById('block-collection-4HcpeD'),
+            'bts-@1099': document.getElementById('block-collection-PFrgwy')
+         };
+         function activateTab(tabId) {
+            Object.keys(tabPanels).forEach(id => {
+               const panel = tabPanels[id];
+               if (panel) panel.hidden = (id !== tabId);
+               const btn = document.getElementById(id);
+               if (btn) btn.setAttribute('aria-expanded', id === tabId);
+            });
+         }
+         tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+               let targetId = null;
+               if (btn.id === 'bts-@999') targetId = 'bts-@999';
+               if (btn.id === 'bts-@1099') targetId = 'bts-@1099';
+               if (targetId) activateTab(targetId);
+            });
+         });
+         // initial active
+         activateTab('bts-@999');
+
+         // Product card click -> details page
+         document.querySelectorAll('.xmas-card').forEach((card) => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (event) => {
+               if (event.target.closest('a, button, .xmas-variant-item')) return;
+               window.location.href = './details.html';
+            });
+         });
+      })();
+   </script>
+</body>
+</html>

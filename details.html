@@ -1,0 +1,483 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zylo Product</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    background: #f5f5f5;
+  }
+
+  /* Header and footer use shared styles from style.css */
+
+  /* BANNER IMAGE */
+  .banner {
+    width: 100%;
+    /* height: 400px;  */
+    background: url('image.png') center/cover no-repeat;
+  }
+
+  /* PRODUCT SECTION */
+  .container {
+    display: flex;
+    max-width: 1200px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* LEFT */
+  .left {
+    width: 50%;
+    background: #f2dfc2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .left img {
+    max-height: 500px;
+  }
+
+  /* RIGHT */
+  .right {
+    width: 50%;
+    padding: 40px;
+  }
+
+  .price { display: flex; gap: 10px; align-items: center; }
+  .current { color: red; font-size: 32px; }
+  .old { text-decoration: line-through; }
+  .off { background: red; color: white; padding: 4px 8px; }
+
+  .colors {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  .color-box {
+    width: 40px;
+    height: 50px;
+    background: skyblue;
+    cursor: pointer;
+  }
+  .color-box.active { border: 2px solid black; }
+
+  .cart-btn {
+    width: 100%;
+    padding: 15px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    margin-top: 10px;
+  }
+
+  /* OFFERS */
+  .offers {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .offer-box {
+    flex: 1;
+    border: 2px solid #6ea8fe;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .tag {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    color: white;
+    padding: 4px 8px;
+  }
+  .blue { background: blue; }
+  .red { background: red; }
+
+  /* TABS */
+  .tabs { margin-top: 20px; }
+  .tab {
+    padding: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    background-color: rgb(232, 232, 232);
+    border-radius: 3px;
+  }
+  .tab.active { background: blue; color: white; }
+
+  .tab-content { display: none; margin-top: 10px; }
+  .tab-content.active { display: block; }
+
+
+  /* WHATSAPP */
+  .whatsapp {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #25d366;
+    color: white;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+
+  .responsive-promo {
+    width: min(1200px, 95%);
+    margin: 20px auto;
+  }
+
+  .responsive-promo img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .text-container {
+display: flex;
+justify-content: center;
+  }
+  /* DARK SLIDER SECTION */
+.slider-section {
+  background: #111;
+  padding: 40px 0;
+  position: relative;
+  margin-top: 30px;
+}
+
+/* SCROLL CONTAINER */
+.slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 0 60px;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD */
+.slide {
+  min-width: 250px;
+  height: 350px;
+  border-radius: 15px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* DARK OVERLAY */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+}
+
+/* ARROWS */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  color: white;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
+
+  .desktop-image { display: block; }
+  .mobile-image { display: none; }
+
+  @media (max-width: 769px) {
+    .desktop-image { display: none; }
+    .mobile-image { display: block; }
+  }
+
+  </style>
+  </head>
+
+  <body>
+
+<!-- TOP SALE BAR -->
+<div class="top-bar">
+  BACK TO SCHOOL CLEARANCE SALE ENDS IN:
+  <span>00 Days : 10 Hrs : 58 Mins : 03 Secs</span>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="lefts">
+    <i class="fa-solid fa-bars"></i>
+    <span>SHOP</span>
+  </div>
+
+  <div class="logo">
+    rabitat
+  </div>
+
+  <div class="rights">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <i class="fa-regular fa-user"></i>
+    <div class="cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span class="count">0</span>
+    </div>
+  </div>
+</header>
+
+  <!-- BANNER -->
+  <div class="banner"></div>
+
+  <!-- PRODUCT -->
+  <div class="container">
+    <div class="left">
+      <img src="https://www.rabitat.com/cdn/shop/files/Artboard2_d1e9da1d-6a25-458e-83d1-41758f491d28.jpg?v=1770634794&width=2000">
+    </div>
+
+    <div class="right">
+      <h1>Zylo Special Edition</h1>
+      <p>4-8 Years | 550 ml</p>
+
+      <div class="price">
+        <span class="current">₹999</span>
+        <span class="old">₹1999</span>
+        <span class="off">50% OFF</span>
+      </div>
+
+      <p>Color: <span id="colorName">Blue</span></p>
+
+      <div class="colors">
+        <div class="color-box active" data-name="Blue"></div>
+        <div class="color-box" style="background:yellow" data-name="Yellow"></div>
+      </div>
+
+      <button class="cart-btn">Add To Cart</button>
+
+      <!-- OFFERS -->
+      <div class="offers">
+        <div class="offer-box">
+          <span class="tag blue">BEST DEAL</span>
+          Buy 2 @1599
+        </div>
+        <div class="offer-box">
+          <span class="tag red">POPULAR</span>
+          Buy 3 @2499
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <span class="tab active" data-tab="desc">Description</span>
+        <span class="tab" data-tab="spec">Specification</span>
+        <span class="tab" data-tab="spec">Shipping info</span>
+      </div>
+
+      <div id="desc" class="tab-content active">
+        <p>.High quality steel bottle.</p>
+        <p>.High quality steel bottle.</p>
+        <p>.High quality steel bottle.</p>
+        <p>.High quality steel bottle.</p>
+      </div>
+      <div id="spec" class="tab-content">
+        <p>550ml capacity.</p>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="responsive-promo">
+    <img
+      class="desktop-image"
+      src="https://www.rabitat.com/cdn/shop/files/Artboard_2_ad149063-9bdf-4f7e-9d00-1195d5a48401.jpg?v=1736251829"
+      alt="Desktop image"
+    >
+    <img
+      class="mobile-image"
+      src="https://www.rabitat.com/cdn/shop/files/Artboard_3_5196f62d-d0f7-4b82-bec8-b9add52ec606.jpg?v=1736251829"
+      alt="Mobile image"
+      >
+
+
+      <img
+      class="mobile-image"
+      src="https://www.rabitat.com/cdn/shop/files/Artboard_4_44219b79-02a1-4e50-9248-fd18a45319b6.jpg?v=1736251828"
+      alt="Mobile image"
+    >
+    <img
+    class="mobile-image"
+    src="https://www.rabitat.com/cdn/shop/files/Artboard_5_8eaee9d0-1592-437f-90c3-2106b672aab6.jpg?v=1736251829"
+    alt="Mobile image"
+  >
+
+  <img
+  class="mobile-image"
+  src="//www.rabitat.com/cdn/shop/files/Artboard_9_5ee48d0c-e78a-4731-83b7-f4fa4ced946f.jpg?v=1736251828"
+  alt="Mobile image"
+>
+
+
+<div class="text-container">
+  <h3 class="heading h2">Must-have Ads Ons</h3>
+  <!-- DARK IMAGE SLIDER -->
+
+</div>
+<div class="slider-section">
+
+  <div class="arrow left-arrow">&#10094;</div>
+
+  <div class="slider" id="slider">
+
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" />
+      <div class="overlay"></div>
+    </div>
+
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1512499617640-c2f999098c01" />
+      <div class="overlay"></div>
+    </div>
+
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1585386959984-a41552231658" />
+      <div class="overlay"></div>
+    </div>
+
+    <div class="slide">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" />
+      <div class="overlay"></div>
+    </div>
+
+  </div>
+
+  <div class="arrow right-arrow">&#10095;</div>
+
+</div>
+
+
+
+
+  </div>
+
+ 
+
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="#">Return & Exchange</a>
+        <a href="#">Payment Method</a>
+        <a href="#">Refund & Cancellation</a>
+        <a href="#">Shipping & Warranty</a>
+        <a href="#">Warranty Registration</a>
+        <a href="#">Return & Exchange Policy</a>
+        <a href="#">Track Your Order</a>
+        <a href="#">Store Locator</a>
+        <a href="#">Corporate Sales</a>
+        <a href="#">Grievance Officer</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product Categories</h4>
+        <a href="#">Bestsellers</a>
+        <a href="#">Drinkware</a>
+        <a href="#">Foodware</a>
+        <a href="#">Back to School</a>
+        <a href="#">Combos</a>
+        <a href="#">Rabitat Birthday</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Parenting Blogs</h4>
+        <a href="#">All Posts</a>
+        <a href="#">Mom</a>
+        <a href="#">Newborn</a>
+        <a href="#">Toddler</a>
+        <a href="#">Pregnancy</a>
+        <a href="#">Parenting</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>About Rabitat</h4>
+        <a href="#">Who We Are</a>
+        <a href="#">Careers @ Rabitat</a>
+        <a href="#">Product Philosophy</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Login / Create Account</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Rabitat.com - All rights reserved.</div>
+  </footer>
+
+  <div class="whatsapp">💬</div>
+
+  <script>
+  // TIMER
+  const timerEl = document.getElementById("timer");
+  if (timerEl) {
+    let t = 5000;
+    setInterval(() => {
+      let m = Math.floor(t / 60);
+      let s = t % 60;
+      timerEl.innerText = m + ":" + s;
+      t--;
+    }, 1000);
+  }
+
+  // COLOR SWITCH
+  document.querySelectorAll(".color-box").forEach(b=>{
+    b.onclick = ()=>{
+      document.querySelector(".active").classList.remove("active");
+      b.classList.add("active");
+      document.getElementById("colorName").innerText = b.dataset.name;
+    }
+  });
+
+  // TABS
+  document.querySelectorAll(".tab").forEach(tab=>{
+    tab.onclick = ()=>{
+      document.querySelector(".tab.active").classList.remove("active");
+      tab.classList.add("active");
+
+      document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
+      document.getElementById(tab.dataset.tab).classList.add("active");
+    }
+  });
+  </script>
+
+  </body>
+  </html>
