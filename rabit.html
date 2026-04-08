@@ -438,7 +438,7 @@
             <div class="featured-collections">
                <!-- TAB 1: UNDER ₹999 -->
                <product-list id="block-collection-4HcpeD" class="product-list became-visible" style="opacity: 1;">
-                  <div class="product-list__inner">
+                  <div class="product-list__inner" id="rabitTab1Grid">
                      <!-- Clean Lock 2.0 -->
                      <div class="xmas-card" data-product-id="8843207639263">
                         <div class="xmas-card-inner">
@@ -561,7 +561,7 @@
                </product-list>
                <!-- TAB 2: @1099 (simplified but functional) -->
                <product-list id="block-collection-PFrgwy" class="product-list" hidden>
-                  <div class="product-list__inner">
+                  <div class="product-list__inner" id="rabitTab2Grid">
                      <div class="xmas-card" data-product-id="7712387596511">
                         <div class="xmas-card-inner"><div class="xmas-image-container"><a href="/products/hyde"><img src="//www.rabitat.com/cdn/shop/files/Gemini_Generated_Image_jv9e83jv9e83jv9e_326x326.png?v=1774506489" class="xmas-product-img"><div class="xmas-pdp-badge-wrap"><div class="xmas-pdp-badge xmas-pdp-badge--first">New Launch</div></div><div class="xmas-rating-badge"><span class="xmas-star">★</span>4.67</div></a></div><div class="xmas-info"><h3 class="xmas-title"><a href="/products/hyde">Hyde</a></h3><p class="xmas-subheading">1-litre Stainless Steel</p><div class="xmas-price-section"><span class="xmas-sale-price">₹1,199</span><span class="xmas-original-price">₹2,499</span><span class="xmas-save-badge">52% OFF</span></div><p class="xmas-variant-name">Happy Trails</p><div class="xmas-button-wrapper"><button class="xmas-add-to-cart">ADD TO CART</button></div></div></div>
                      </div>
@@ -577,6 +577,8 @@
    <div id="site-footer"></div>
 
    <script src="./layout.js"></script>
+   <script src="./products-data.js"></script>
+   <script src="./products-render.js"></script>
    <script>
       (function() {
          // Variant logic + price update + image + active class
@@ -665,7 +667,10 @@
             card.style.cursor = 'pointer';
             card.addEventListener('click', (event) => {
                if (event.target.closest('a, button, .xmas-variant-item')) return;
-               window.location.href = './details.html';
+               const productId = card.getAttribute('data-product-id') || '';
+               window.location.href = productId
+                  ? `./details.html?id=${encodeURIComponent(productId)}`
+                  : './details.html';
             });
          });
       })();

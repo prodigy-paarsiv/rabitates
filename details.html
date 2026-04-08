@@ -239,17 +239,20 @@ justify-content: center;
   <!-- PRODUCT -->
   <div class="container">
     <div class="left">
-      <img src="https://www.rabitat.com/cdn/shop/files/Artboard2_d1e9da1d-6a25-458e-83d1-41758f491d28.jpg?v=1770634794&width=2000">
+      <img
+        id="detailImage"
+        src="https://www.rabitat.com/cdn/shop/files/Artboard2_d1e9da1d-6a25-458e-83d1-41758f491d28.jpg?v=1770634794&width=2000"
+      >
     </div>
 
     <div class="right">
-      <h1>Zylo Special Edition</h1>
-      <p>4-8 Years | 550 ml</p>
+      <h1 id="detailName">Zylo Special Edition</h1>
+      <p id="detailSub">4-8 Years | 550 ml</p>
 
       <div class="price">
-        <span class="current">₹999</span>
-        <span class="old">₹1999</span>
-        <span class="off">50% OFF</span>
+        <span class="current" id="detailPrice">₹999</span>
+        <span class="old" id="detailCompare">₹1999</span>
+        <span class="off" id="detailOff">50% OFF</span>
       </div>
 
       <p>Color: <span id="colorName">Blue</span></p>
@@ -374,7 +377,46 @@ justify-content: center;
 
   <div class="whatsapp">💬</div>
 
+  <script src="./products-data.js"></script>
   <script>
+  function getAllProducts() {
+    const src = window.PRODUCT_DATA || {};
+    return []
+      .concat(src.homePrimary || [])
+      .concat(src.homeSecondary || [])
+      .concat(src.rabitTab1 || [])
+      .concat(src.rabitTab2 || []);
+  }
+
+  function applyProductDetails() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (!id) return;
+
+    const product = getAllProducts().find((p) => p.id === id);
+    if (!product) return;
+
+    const img = document.getElementById("detailImage");
+    const name = document.getElementById("detailName");
+    const sub = document.getElementById("detailSub");
+    const price = document.getElementById("detailPrice");
+    const compare = document.getElementById("detailCompare");
+    const off = document.getElementById("detailOff");
+    const colorName = document.getElementById("colorName");
+
+    if (img && product.image) img.src = product.image;
+    if (img && product.name) img.alt = product.name;
+    if (name && product.name) name.textContent = product.name;
+    if (sub && product.sub) sub.textContent = product.sub;
+    if (price && product.price) price.textContent = product.price;
+    if (compare && product.compare) compare.textContent = product.compare;
+    if (off && product.off) off.textContent = product.off;
+    if (colorName && product.variant) colorName.textContent = product.variant;
+    if (product.name) document.title = product.name + " | Rabitat";
+  }
+
+  applyProductDetails();
+
   // TIMER
   const timerEl = document.getElementById("timer");
   if (timerEl) {

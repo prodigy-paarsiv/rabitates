@@ -17,9 +17,33 @@
     <a class="contact-link" href="./rabit2.html">Contact Us</a>
     <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
     <!-- <i class="fa-regular fa-user"></i> -->
-    <div class="cart">
+    <div class="cart cart-trigger" role="button" tabindex="0" aria-label="Open cart">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="count">0</span>
     </div>
   </div>
 </header>
+
+<div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-drawer-header">
+    <h3 id="cartDrawerTitle">Your Cart (0 items)</h3>
+    <button class="cart-drawer-close" id="cartDrawerClose" aria-label="Close cart">×</button>
+  </div>
+  <div class="cart-drawer-shipping">
+    <span>Free Shipping on All Prepaid Orders</span>
+  </div>
+  <div class="cart-drawer-body">
+    <div class="cart-items" id="cartDrawerItems"></div>
+    <div class="cart-empty" id="cartDrawerEmpty">
+      <p>Nothing Here</p>
+      <button onclick="window.location.href='./index.html'">Explore products</button>
+    </div>
+  </div>
+  <div class="cart-drawer-footer" id="cartDrawerFooter">
+    <div class="cart-subtotal-row">
+      <span>Subtotal</span>
+      <strong id="cartSubtotal">₹0</strong>
+    </div>
+  </div>
+</aside>

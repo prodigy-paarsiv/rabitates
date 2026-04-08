@@ -89,7 +89,7 @@
   </div>
 
   <!-- PRODUCT GRID -->
-  <div class="product-grid">
+  <div class="product-grid" id="homePrimaryGrid">
 
     <!-- CARD -->
     <div class="product-card">
@@ -230,7 +230,7 @@
     </div>
 
     <!-- GRID -->
-    <div class="products__grid">
+    <div class="products__grid" id="homeSecondaryGrid">
 
       <!-- CARD 1 -->
       <div class="product-card">
@@ -516,6 +516,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="./products-data.js"></script>
+<script src="./products-render.js"></script>
   <script>
 $(document).ready(function(){
   $(".kids-carousel").owlCarousel({
@@ -563,15 +565,14 @@ setInterval(()=>{
 </script>
 
 <script>
-  document.querySelectorAll(".product-card").forEach((card) => {
-    card.style.cursor = "pointer";
-
-    card.addEventListener("click", (event) => {
-      if (event.target.closest("button, a")) {
-        return;
-      }
-      window.location.href = "./details.html";
-    });
+  document.addEventListener("click", (event) => {
+    const card = event.target.closest(".product-card");
+    if (!card) return;
+    if (event.target.closest("button, a")) return;
+    const productId = card.dataset.id || "";
+    window.location.href = productId
+      ? `./details.html?id=${encodeURIComponent(productId)}`
+      : "./details.html";
   });
 
   document.querySelectorAll(".category-card").forEach((card) => {
