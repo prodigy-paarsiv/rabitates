@@ -100,7 +100,13 @@ function updateCartUI() {
         <img src="${item.image}" alt="${item.name}">
         <div class="cart-item-info">
           <h4>${item.name}</h4>
-          <p>${item.price}</p>
+          <p class="cart-item-sub">${item.sub || ""}</p>
+          <div class="cart-item-price-row">
+            <span class="cart-item-sale">${item.price}</span>
+            <span class="cart-item-compare">${item.compare || ""}</span>
+            <span class="cart-item-off">${item.off || ""}</span>
+          </div>
+          <p class="cart-item-variant">${item.variant || ""}</p>
           <button class="cart-remove-btn" data-action="remove" data-id="${item.id}">Remove</button>
         </div>
         <div class="cart-qty-controls">
@@ -126,7 +132,11 @@ function addToCart(productId) {
     cart.push({
       id: product.id,
       name: product.name,
+      sub: product.sub,
       price: product.price,
+      compare: product.compare,
+      off: product.off,
+      variant: product.variant,
       image: product.image,
       qty: 1
     });
