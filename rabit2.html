@@ -37,10 +37,10 @@
 <div class="contact-section">
   <h2>Contact Us</h2>
 
-  <form class="contact-form">
-    <input type="text" placeholder="Name">
-    <input type="email" placeholder="E-Mail">
-    <textarea placeholder="Message"></textarea>
+  <form class="contact-form" id="contactForm">
+    <input type="text" id="contactName" placeholder="Name" required>
+    <input type="email" id="contactEmail" placeholder="E-Mail" required>
+    <textarea id="contactMessage" placeholder="Message" required></textarea>
     <button type="submit">SUBMIT</button>
   </form>
 </div>
@@ -51,6 +51,38 @@
 <div class="whatsapp-btn">💬</div>
 
 <script src="./layout.js"></script>
+<script>
+  const CONTACT_STORAGE_KEY = "rabitat_contact_submissions";
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("contactName")?.value.trim() || "";
+    const email = document.getElementById("contactEmail")?.value.trim() || "";
+    const message = document.getElementById("contactMessage")?.value.trim() || "";
+    if (!name || !email || !message) return;
+
+    let submissions = [];
+    try {
+      submissions = JSON.parse(localStorage.getItem(CONTACT_STORAGE_KEY) || "[]");
+      if (!Array.isArray(submissions)) submissions = [];
+    } catch (e) {
+      submissions = [];
+    }
+
+    submissions.push({
+      name,
+      email,
+      message,
+      submittedAt: new Date().toISOString()
+    });
+
+    localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(submissions));
+    contactForm.reset();
+    alert("Thanks! Your message has been saved.");
+  });
+</script>
 
 </body>
 </html>
