@@ -391,10 +391,10 @@ justify-content: center;
   function applyProductDetails() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
-    if (!id) return;
+    if (!id) return null;
 
     const product = getAllProducts().find((p) => p.id === id);
-    if (!product) return;
+    if (!product) return null;
 
     const img = document.getElementById("detailImage");
     const name = document.getElementById("detailName");
@@ -413,9 +413,30 @@ justify-content: center;
     if (off && product.off) off.textContent = product.off;
     if (colorName && product.variant) colorName.textContent = product.variant;
     if (product.name) document.title = product.name + " | Rabitat";
+
+    return product;
   }
 
-  applyProductDetails();
+  const product = applyProductDetails();
+
+  if (product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      MCP: {
+        pageType: "PDP Page",
+        item: {
+          id: product.id,
+          name: product.name,
+          url: window.location.href,
+          imageUrl: product.image,
+          description: product.sub || "",
+          category: ["Kids Products"],
+          productCategory: ["Bestsellers"],
+          Industries: ["Kids"]
+        }
+      }
+    });
+  }
 
   // TIMER
   const timerEl = document.getElementById("timer");

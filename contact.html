@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div id="site-header"></div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  Home / Contact Us
+</div>
+
+<!-- Info Section -->
+<div class="info-section">
+  <h3>Welcome to Merlin!</h3>
+  <p>
+    We're delighted to have you with us. If you have any questions or need assistance,
+    our Customer Care team will be happy to support you.
+  </p>
+
+  <p class="bold">Customer Care Availability</p>
+  <p>Monday to Saturday | 10:00 AM - 6:00 PM</p>
+  <p class="muted">(Closed on Sundays and gazetted holidays)</p>
+
+  <p>📞 0769201064</p>
+  <p>✉️ help@rabitat.com</p>
+  <p class="whatsapp">💬 +91-9999-002-305</p>
+</div>
+
+<!-- Contact Form -->
+<div class="contact-section">
+  <h2>Contact Us</h2>
+
+  <form class="contact-form" id="contactForm">
+    <input type="text" id="first_name" placeholder="First Name" required>
+    <input type="text" id="last_name" placeholder="Last Name" required>
+    <input type="text" id="company" placeholder="Company" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="tel" id="phone_number" placeholder="Phone Number" required>
+    <input type="text" id="00NF300000JS8cE" placeholder="Location" required>
+    <input type="text" id="00NHF000000skST" placeholder="How did you find us?" required>
+    <input type="text" id="00NHF000000skU5" placeholder="Enquiry Category" required>
+    <textarea id="description" placeholder="Your Message" required></textarea>
+    <button type="submit" id="submitbtn">SUBMIT</button>
+  </form>
+</div>
+
+<div id="site-footer"></div>
+
+<!-- WhatsApp Button -->
+<div class="whatsapp-btn">💬</div>
+
+<script src="./layout.js"></script>
+<script>
+  const CONTACT_STORAGE_KEY = "rabitat_contact_submissions";
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const firstName = document.getElementById("first_name")?.value.trim() || "";
+    const lastName = document.getElementById("last_name")?.value.trim() || "";
+    const companyName = document.getElementById("company")?.value.trim() || "";
+    const emailAddress = document.getElementById("email")?.value.trim() || "";
+    const phoneNumber = document.getElementById("phone_number")?.value.trim() || "";
+    const location = document.getElementById("00NF300000JS8cE")?.value.trim() || "";
+    const findUs = document.getElementById("00NHF000000skST")?.value.trim() || "";
+    const enquiryCategory = document.getElementById("00NHF000000skU5")?.value.trim() || "";
+    const yourMessage = document.getElementById("description")?.value.trim() || "";
+    if (!firstName || !emailAddress || !yourMessage) return;
+
+    let submissions = [];
+    try {
+      submissions = JSON.parse(localStorage.getItem(CONTACT_STORAGE_KEY) || "[]");
+      if (!Array.isArray(submissions)) submissions = [];
+    } catch (e) {
+      submissions = [];
+    }
+
+    submissions.push({
+      firstName,
+      lastName,
+      companyName,
+      emailAddress,
+      phoneNumber,
+      location,
+      findUs,
+      enquiryCategory,
+      yourMessage,
+      submittedAt: new Date().toISOString()
+    });
+
+    localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(submissions));
+    contactForm.reset();
+    alert("Thanks! Your message has been saved.");
+  });
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    MCP: {
+      pageType: "Contact Us Page",
+      pageName: "Contact Us"
+    }
+  });
+  </script>
+
+</body>
+</html>
