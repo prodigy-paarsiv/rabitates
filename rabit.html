@@ -19,16 +19,31 @@
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             color: #1a1e2b;
             line-height: 1.4;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        html {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .top-bar,
+        .header,
+        .latest-collection,
+        .site-footer {
+            width: 100%;
+        }
+
+        .latest-collection > div:first-child img {
+            width: 100%;
+            display: block;
         }
 
         .container {
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-
-        .section {
-            /* padding: 48px 0; */
         }
 
         /* ---------- TABS NAVIGATION ---------- */
