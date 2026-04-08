@@ -143,6 +143,46 @@ function addToCart(productId) {
   }
   saveCart(cart);
   updateCartUI();
+  sendAddToCartEvent(product);
+}
+
+function sendAddToCartEvent(product) {
+  if (!product || !window.SalesforceInteractions || !SalesforceInteractions.sendEvent) return;
+
+  const priceValue = Number(String(product.price || "").replace(/[^\d.]/g, "")) || 0;
+  const quantity = 1;
+  const lineItem = {
+    catalogObjectType: "Product",
+    catalogObjectId: product.id,
+    quantity,
+    price: priceValue,
+    attributes: {
+      name: product.name,
+      sku: { id: product.id }
+    }
+  };
+
+  SalesforceInteractions.sendEvent({
+    interaction: {
+      name: SalesforceInteractions.CartInteractionName?.AddToCart || "AddToCart",
+      lineItem
+    }
+  });
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    MCP: {
+      event: "add_to_cart",
+      item: {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        url: window.location.href,
+        imageUrl: product.image,
+        quantity
+      }
+    }
+  });
 }
 
 function changeQty(productId, delta) {
