@@ -79,6 +79,15 @@
   border-radius:50%;
 }
 
+#site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #f5f5f5;
+}
+
 body.cart-open{
   overflow:hidden;
 }
@@ -576,6 +585,7 @@ body.cart-open{
 body{
   background:#f5f5f5;
   font-family: 'Poppins', sans-serif;
+  padding-top: 80px;
 }
 
 /* SECTION */

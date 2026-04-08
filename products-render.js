@@ -17,7 +17,6 @@
           <p class="sub">${p.sub}</p>
           <div class="price">${p.price} <span>${p.compare}</span><label>${p.off}</label></div>
           <p class="brand">${p.variant}</p>
-          <div class="variants"><img src="v1.png"><img src="v2.png"><img src="v3.png"></div>
           <button class="cart-btnn">ADD TO CART</button>
         </div>
       </div>`

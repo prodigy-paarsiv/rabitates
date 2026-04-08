@@ -290,4 +290,25 @@ window.addEventListener("DOMContentLoaded", async () => {
   initAddToCartEvents();
   initCartItemActions();
   updateCartUI();
+
+  // Countdown timer
+  const countdownEl = document.getElementById("countdown");
+  if (countdownEl) {
+    const endTime = localStorage.getItem('countdownEnd') || (Date.now() + 24 * 60 * 60 * 1000);
+    localStorage.setItem('countdownEnd', endTime);
+
+    const updateCountdown = () => {
+      const remaining = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+      const days = Math.floor(remaining / (60 * 60 * 24));
+      const hours = Math.floor((remaining % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((remaining % (60 * 60)) / 60);
+      const seconds = remaining % 60;
+      countdownEl.innerText = `${days.toString().padStart(2, '0')} Days : ${hours.toString().padStart(2, '0')} Hrs : ${minutes.toString().padStart(2, '0')} Mins : ${seconds.toString().padStart(2, '0')} Secs`;
+      if (remaining <= 0) {
+        clearInterval(interval);
+      }
+    };
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+  }
 });
