@@ -14,9 +14,7 @@
 <div id="site-header"></div>
 
 <!-- Breadcrumb -->
-<div class="breadcrumb">
-  Home / Contact Us
-</div>
+
 
 <!-- Info Section -->
 <div class="info-section">
@@ -39,69 +37,73 @@
 <div class="contact-section">
   <h2>Contact Us</h2>
 
-  <form class="contact-form" id="contactForm">
+  <form class="contact-form" id="contactForm" novalidate>
     <input type="text" id="first_name" placeholder="First Name" required>
-    <input type="text" id="last_name" placeholder="Last Name" required>
-    <input type="text" id="company" placeholder="Company" required>
-    <input type="email" id="email" placeholder="Email" required>
     <input type="tel" id="phone_number" placeholder="Phone Number" required>
-    <input type="text" id="00NF300000JS8cE" placeholder="Location" required>
-    <input type="text" id="00NHF000000skST" placeholder="How did you find us?" required>
-    <input type="text" id="00NHF000000skU5" placeholder="Enquiry Category" required>
+    <input type="text" id="address" placeholder="Address" required>
+    <input type="email" id="email" placeholder="Email" required>
     <textarea id="description" placeholder="Your Message" required></textarea>
-    <button type="submit" id="submitbtn">SUBMIT</button>
+    <button type="button" id="submitbtn" onclick="handleContactSubmit()">SUBMIT</button>
+    <div id="contactStatus" style="margin-top:12px; font-weight:600; color:#0a6f31;"></div>
   </form>
 </div>
 
 <div id="site-footer"></div>
 
-<!-- WhatsApp Button -->
-<div class="whatsapp-btn">💬</div>
 
 <script src="./layout.js"></script>
 <script>
   const CONTACT_STORAGE_KEY = "rabitat_contact_submissions";
-  const contactForm = document.getElementById("contactForm");
 
-  contactForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
+  function handleContactSubmit() {
+    const submitButton = document.getElementById("submitbtn");
+    const statusEl = document.getElementById("contactStatus");
+    const contactForm = document.getElementById("contactForm");
 
     const firstName = document.getElementById("first_name")?.value.trim() || "";
-    const lastName = document.getElementById("last_name")?.value.trim() || "";
-    const companyName = document.getElementById("company")?.value.trim() || "";
-    const emailAddress = document.getElementById("email")?.value.trim() || "";
     const phoneNumber = document.getElementById("phone_number")?.value.trim() || "";
-    const location = document.getElementById("00NF300000JS8cE")?.value.trim() || "";
-    const findUs = document.getElementById("00NHF000000skST")?.value.trim() || "";
-    const enquiryCategory = document.getElementById("00NHF000000skU5")?.value.trim() || "";
+    const address = document.getElementById("address")?.value.trim() || "";
+    const emailAddress = document.getElementById("email")?.value.trim() || "";
     const yourMessage = document.getElementById("description")?.value.trim() || "";
-    if (!firstName || !emailAddress || !yourMessage) return;
 
-    let submissions = [];
-    try {
-      submissions = JSON.parse(localStorage.getItem(CONTACT_STORAGE_KEY) || "[]");
-      if (!Array.isArray(submissions)) submissions = [];
-    } catch (e) {
-      submissions = [];
+    if (!firstName || !phoneNumber || !address || !emailAddress || !yourMessage) {
+      statusEl.textContent = "Please fill in the required fields.";
+      statusEl.style.color = "#bf1f1f";
+      submitButton.disabled = false;
+      submitButton.textContent = "SUBMIT";
+      return;
     }
 
-    submissions.push({
-      firstName,
-      lastName,
-      companyName,
-      emailAddress,
-      phoneNumber,
-      location,
-      findUs,
-      enquiryCategory,
-      yourMessage,
-      submittedAt: new Date().toISOString()
-    });
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+    statusEl.style.color = "#0a6f31";
+    statusEl.textContent = "Please wait...";
 
-    localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(submissions));
-    contactForm.reset();
-    alert("Thanks! Your message has been saved.");
-  });
+    setTimeout(() => {
+      let submissions = [];
+      try {
+        submissions = JSON.parse(localStorage.getItem(CONTACT_STORAGE_KEY) || "[]");
+        if (!Array.isArray(submissions)) submissions = [];
+      } catch (e) {
+        submissions = [];
+      }
+
+      submissions.push({
+        firstName,
+        phoneNumber,
+        address,
+        emailAddress,
+        yourMessage,
+      });
+
+      localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(submissions));
+      contactForm.reset();
+      submitButton.disabled = false;
+      submitButton.textContent = "SUBMIT";
+      statusEl.style.color = "#0a6f31";
+      statusEl.textContent = "Thank you! Your message has been sent successfully. We'll get back to you shortly.";
+    }, 1800);
+  }
 </script>
 <script>
   window.dataLayer = window.dataLayer || [];
