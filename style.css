@@ -529,9 +529,15 @@ body.cart-open{
   font-weight:600;
 }
 
+.price .old,
+.price span,
+.product-card__price span,
+.xmas-original-price {
+  text-decoration: line-through;
+  color: #999;
+}
+
 .price span{
-  text-decoration:line-through;
-  color:#999;
   margin-left:5px;
 }
 
@@ -809,7 +815,7 @@ body{
 }
 
 .product-card__price span {
-  text-decoration: line-through;
+  text-decoration: none;
   color: #999;
   margin-left: 5px;
 }

@@ -6,15 +6,11 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script type="text/javascript" src="//cdn.evgnet.com/beacon/socialbeatdigitalmarketing/rabitat/scripts/evergage.min.js"></script>
-
 </head>
 
 <body>
 
 <div id="site-header"></div>
-
-<!-- Breadcrumb -->
-
 
 <!-- Info Section -->
 <div class="info-section">
@@ -50,22 +46,22 @@
 
 <div id="site-footer"></div>
 
-
 <script src="./layout.js"></script>
 <script>
   const CONTACT_STORAGE_KEY = "rabitat_contact_submissions";
 
   function handleContactSubmit() {
-    const submitButton = document.getElementById("submitbtn");
-    const statusEl = document.getElementById("contactStatus");
-    const contactForm = document.getElementById("contactForm");
+    const submitButton  = document.getElementById("submitbtn");
+    const statusEl      = document.getElementById("contactStatus");
+    const contactForm   = document.getElementById("contactForm");
 
-    const firstName = document.getElementById("first_name")?.value.trim() || "";
-    const phoneNumber = document.getElementById("phone_number")?.value.trim() || "";
-    const address = document.getElementById("address")?.value.trim() || "";
-    const emailAddress = document.getElementById("email")?.value.trim() || "";
-    const yourMessage = document.getElementById("description")?.value.trim() || "";
+    const firstName    = document.getElementById("first_name")?.value.trim()    || "";
+    const phoneNumber  = document.getElementById("phone_number")?.value.trim()  || "";
+    const address      = document.getElementById("address")?.value.trim()       || "";
+    const emailAddress = document.getElementById("email")?.value.trim()         || "";
+    const yourMessage  = document.getElementById("description")?.value.trim()   || "";
 
+    // ─── Validation ───────────────────────────────────────────────────────
     if (!firstName || !phoneNumber || !address || !emailAddress || !yourMessage) {
       statusEl.textContent = "Please fill in the required fields.";
       statusEl.style.color = "#bf1f1f";
@@ -79,7 +75,30 @@
     statusEl.style.color = "#0a6f31";
     statusEl.textContent = "Please wait...";
 
+    // ─── Evergage: user identity + attributes set karo ───────────────────
+    // Yeh ZARURI hai — isse MCP ko emailAddress milega payload mein
+    Evergage.sendEvent({
+      action: "Contact Us Submitted",
+      user: {
+        id: emailAddress,
+        email: emailAddress,
+        attributes: {
+          emailAddress:   emailAddress,
+          sfmcContactKey: emailAddress,
+          name:           firstName,
+          yourMessage:    yourMessage,
+          mobileNumber:   phoneNumber,
+          location:       address,
+          customerId:     emailAddress,
+          profileId:      emailAddress,
+        }
+      }
+    });
+    
+    // ─────────────────────────────────────────────────────────────────────
+
     setTimeout(() => {
+      // ─── localStorage mein save karo ───────────────────────────────────
       let submissions = [];
       try {
         submissions = JSON.parse(localStorage.getItem(CONTACT_STORAGE_KEY) || "[]");
@@ -88,15 +107,10 @@
         submissions = [];
       }
 
-      submissions.push({
-        firstName,
-        phoneNumber,
-        address,
-        emailAddress,
-        yourMessage,
-      });
-
+      submissions.push({ firstName, phoneNumber, address, emailAddress, yourMessage });
       localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(submissions));
+      // ───────────────────────────────────────────────────────────────────
+
       contactForm.reset();
       submitButton.disabled = false;
       submitButton.textContent = "SUBMIT";
@@ -105,15 +119,17 @@
     }, 1800);
   }
 </script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
+    event: "page_view",
     MCP: {
       pageType: "Contact Us Page",
       pageName: "Contact Us"
     }
   });
-  </script>
+</script>
 
 </body>
 </html>
