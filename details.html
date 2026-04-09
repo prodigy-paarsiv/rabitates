@@ -220,9 +220,106 @@ justify-content: center;
   .desktop-image { display: block; }
   .mobile-image { display: none; }
 
+.musthave-section {
+  width: min(1200px, 95%);
+  margin: 24px auto 10px;
+  padding-bottom: 20px;
+}
+
+.musthave-title {
+  text-align: center;
+  font-size: 46px;
+  margin-bottom: 22px;
+  color: #212121;
+  letter-spacing: 0.5px;
+}
+
+.musthave-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.musthave-card {
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.musthave-image-wrap {
+  background: #e7eff7;
+  aspect-ratio: 1 / 1;
+}
+
+.musthave-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.musthave-info {
+  padding: 10px 0 0;
+}
+
+.musthave-name {
+  font-size: 25px;
+  line-height: 1.15;
+  color: #232323;
+  margin-bottom: 8px;
+}
+
+.musthave-rating {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.musthave-rating .star {
+  color: #f5b400;
+}
+
+.musthave-price {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 32px;
+  margin-bottom: 14px;
+}
+
+.musthave-price .compare {
+  color: #8d8d8d;
+  text-decoration: line-through;
+  font-size: 34px;
+}
+
+.musthave-btn {
+  width: 100%;
+  border: none;
+  background: #f22646;
+  color: #fff;
+  padding: 12px;
+  font-size: 20px;
+  border-radius: 0 0 6px 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .musthave-title { font-size: 38px; }
+  .musthave-name { font-size: 24px; }
+  .musthave-rating { font-size: 16px; }
+  .musthave-price { font-size: 24px; }
+  .musthave-price .compare { font-size: 24px; }
+  .musthave-btn { font-size: 20px; }
+}
+
   @media (max-width: 769px) {
     .desktop-image { display: none; }
     .mobile-image { display: block; }
+    .musthave-grid { grid-template-columns: 1fr; }
+    .musthave-title { font-size: 32px; }
+    .musthave-btn { font-size: 18px; }
   }
 
   </style>
@@ -312,42 +409,10 @@ justify-content: center;
 >
 
 
-<div class="text-container">
-  <h3 class="heading h2">Must-have Ads Ons</h3>
-  <!-- DARK IMAGE SLIDER -->
-
-</div>
-<div class="slider-section">
-
-  <div class="arrow left-arrow">&#10094;</div>
-
-  <div class="slider" id="slider">
-
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" />
-      <div class="overlay"></div>
-    </div>
-
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1512499617640-c2f999098c01" />
-      <div class="overlay"></div>
-    </div>
-
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1585386959984-a41552231658" />
-      <div class="overlay"></div>
-    </div>
-
-    <div class="slide">
-      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" />
-      <div class="overlay"></div>
-    </div>
-
-  </div>
-
-  <div class="arrow right-arrow">&#10095;</div>
-
-</div>
+<section class="musthave-section">
+  <h2 class="musthave-title">Must-Have Add-Ons</h2>
+  <div class="musthave-grid" id="mustHaveGrid"></div>
+</section>
 
 
 
@@ -403,6 +468,48 @@ justify-content: center;
 
   const product = applyProductDetails();
 
+  function getMustHaveProducts(currentProductId) {
+    const src = window.PRODUCT_DATA || {};
+    const addOnPool = []
+      .concat(src.rabitTab1 || [])
+      .concat(src.rabitTab2 || [])
+      .concat(src.homeSecondary || []);
+
+    return addOnPool
+      .filter((p) => p && p.id && p.id !== currentProductId)
+      .slice(0, 3);
+  }
+
+  function renderMustHaveAddOns(items) {
+    const grid = document.getElementById("mustHaveGrid");
+    if (!grid || !Array.isArray(items)) return;
+
+    grid.innerHTML = items
+      .map((p) => {
+        const rating = p.rating || "4.6";
+        const reviews = Math.max(10, Math.round(Number(rating) * 12));
+        return `
+          <article class="musthave-card" data-id="${p.id}">
+            <div class="musthave-image-wrap">
+              <img src="${p.image}" alt="${p.name}">
+            </div>
+            <div class="musthave-info">
+              <h3 class="musthave-name">${p.name}</h3>
+              <p class="musthave-rating"><span class="star">★</span> ${rating} | ${reviews} Reviews</p>
+              <div class="musthave-price">
+                <span>${p.price}</span>
+                <span class="compare">${p.compare || ""}</span>
+              </div>
+              <button class="musthave-btn xmas-add-to-cart">ADD TO CART</button>
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+  }
+
+  renderMustHaveAddOns(getMustHaveProducts(product ? product.id : ""));
+
   if (product) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -453,6 +560,16 @@ justify-content: center;
       document.querySelectorAll(".tab-content").forEach(c=>c.classList.remove("active"));
       document.getElementById(tab.dataset.tab).classList.add("active");
     }
+  });
+
+  document.addEventListener("click", (event) => {
+    const card = event.target.closest(".musthave-card");
+    if (!card) return;
+    if (event.target.closest("button, a")) return;
+    const productId = card.dataset.id || "";
+    window.location.href = productId
+      ? `./details.html?id=${encodeURIComponent(productId)}`
+      : "./details.html";
   });
   </script>
   <script src="./layout.js"></script>
