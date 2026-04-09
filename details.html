@@ -60,6 +60,14 @@
 
   .price { display: flex; gap: 10px; align-items: center; }
   .current { color: red; font-size: 32px; }
+  .price .current,
+  .price .off {
+    text-decoration: none;
+  }
+  .price .old {
+    text-decoration: line-through;
+    color: #999;
+  }
   .off { background: red; color: white; padding: 4px 8px; }
 
   .colors {
@@ -410,7 +418,7 @@ justify-content: center;
 
 
 <section class="musthave-section">
-  <h2 class="musthave-title">Must-Have Add-Ons</h2>
+  <h2 class="musthave-title">Similar Products</h2>
   <div class="musthave-grid" id="mustHaveGrid"></div>
 </section>
 
